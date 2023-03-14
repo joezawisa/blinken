@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+	<head>
+    	<meta charset="utf8">
+        <meta name="description" content="Blinkenlights" />
+        <title>SWE Blinken Lights</title>
+        <script src="https://blinken.org/client.js"></script>
+    </head>
+<body>
+    <script>
+        // See https://blinken.org
+
+        (new Blinken({title: "SWE Colors", author: "Joe Zawisa"})).run(ilights => {
+            let colors = [
+                {red: 90, green: 85, blue: 117}, // purple
+                {red: 218, green: 198, blue: 102}, // yellow
+                {red: 169, green: 169, blue: 170} // gray
+            ];
+
+            // Convert all the colors from a 0-255 scale to a 0-1 scale
+            for(c = 0; c < colors.length; ++c) {
+                colors[c].red /= 255;
+                colors[c].green /= 255;
+                colors[c].blue /= 255;
+            }
+
+            const bulbs = 100; // Number of bulbs
+            const groupsize = bulbs / 20; // How many bulbs in a line will be the same color
+            let offset = 0; // Offset from original color
+            let increasing = false; // Are we increasing or decreasing the offset?
+
+            // Set all the lights to their starting color
+            for(b = 0; b < bulbs; ++b) {
+                color = 0;
+                ilights[b].rgba(color.red, color.green, color.blue, 1);
+            }
+
+            // Return a function to update the lights
+            return (ulights) => {
+                // Set all the bulbs to a new color
+                for(b = 0; b < bulbs; ++b) {
+                    color = colors[(Math.floor(b / groupsize) + offset) % colors.length];
+                    ulights[b].rgb(color.red, color.green, color.blue);
+                }
+
+                offset++;
+
+                // Return the time (milliseconds) to wait until updating  again
+                return 500;
+            };
+        });
+    </script>
+</body>
+</html>
