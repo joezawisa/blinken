@@ -12,9 +12,9 @@
 
         (new Blinken({title: "SWE Colors", author: "Joe Zawisa"})).run(ilights => {
             let colors = [
-                {red: 90, green: 85, blue: 117}, // purple
-                {red: 218, green: 198, blue: 102}, // yellow
-                {red: 169, green: 169, blue: 170} // gray
+                {red: 255, green: 0, blue: 255, opacity: 1}, // purple
+                {red: 255, green: 255, blue: 0, opacity: 1}, // yellow
+                {red: 0, green: 0, blue: 0, opacity: 0.5} // gray
             ];
 
             // Convert all the colors from a 0-255 scale to a 0-1 scale
@@ -32,7 +32,7 @@
             // Set all the lights to their starting color
             for(b = 0; b < bulbs; ++b) {
                 color = 0;
-                ilights[b].rgba(color.red, color.green, color.blue, 1);
+                ilights[b].rgba(color.red, color.green, color.blue, color.opacity);
             }
 
             // Return a function to update the lights
@@ -40,7 +40,7 @@
                 // Set all the bulbs to a new color
                 for(b = 0; b < bulbs; ++b) {
                     color = colors[(Math.floor(b / groupsize) + offset) % colors.length];
-                    ulights[b].rgb(color.red, color.green, color.blue);
+                    ulights[b].rgb(color.red, color.green, color.blue, color.opacity);
                 }
 
                 offset++;
